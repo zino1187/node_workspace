@@ -239,8 +239,28 @@ function getCategory(request, response){
 function getAnimal(request, response){
     var category_id = urlJson.query.category_id;//get방식의 category_id 파라미터 받기!!
     var sql="select * from animal where category_id="+category_id;
-    response.writeHead(200, {"Content-Type":"text/html;charset=utf-8"});
-    response.end(sql);
+
+    //mysql연동 
+    con.query(sql, function(error, record, fields){
+        if(error){
+            console.log("동물목록 가져오기 실패", error);
+        }else{
+            console.log("record : " , record);
+
+            fs.readFile("./animal.ejs","utf-8", function(err, data){
+                if(err){
+                    console.log("animal.ejs읽기 실패", err);
+                }else{
+                    response.writeHead(200, {"Content-Type":"text/html;charset=utf-8"});
+                    response.end(ejs.render(data, {
+                        animalArray:record
+                    }));
+                }
+            });
+
+        }
+    });
+
 }
 
 //mysql 접속 
