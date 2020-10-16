@@ -42,6 +42,18 @@ $(function(){
     $($("input[type='button']")[0]).click(function(){
         location.href="list.html";
     });
+
+    //등록버튼을 누르면..
+    $($("input[type='button']")[1]).click(function(){
+      alert();
+        $("form").attr({
+          "method":"post", //전송방식
+          "action":"/notice/regist" //전송주소
+        });
+        $("form").submit();//전송
+    });
+
+
 });    
 </script>
 </head>
@@ -50,10 +62,11 @@ $(function(){
 <h3>게시물 등록</h3>
 
 <div class="container">
-  <form action="/action_page.php">
-    <input type="text" id="fname" name="firstname" placeholder="제목..">
-    <input type="text" id="lname" name="lastname" placeholder="작성자..">
-    <textarea id="subject" name="subject" placeholder="내용.." style="height:200px"></textarea>
+  <!-- form 태그에 디폴트 method는 get이다.. -->
+  <form>
+    <input type="text" name="title" placeholder="제목..">
+    <input type="text" name="writer" placeholder="작성자..">
+    <textarea id="subject" name="content" placeholder="내용.." style="height:200px"></textarea>
     <input type="button" value="목록으로">
     <input type="button" value="등록하기">
   </form>

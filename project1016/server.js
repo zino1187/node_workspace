@@ -9,6 +9,14 @@ var http=require("http");
 var fs = require("fs");
 var express = require("express"); //http보다 훨씬 더 많은 기능이 보강된 모듈
 var static  = require("serve-static");//정적 자원 처리 전담 미들웨어!!
+var mysql = require("mysql");
+let conStr={
+    url:"localhost",
+    user:"root",
+    password:"1234",
+    database:"node"
+};
+let con;
 
 //express 모듈은 미들웨어라 불리는 함수를 이용하여 기존의 http모듈로는
 //할 수 없었던 추가된 기능들을 지원한다...(express 필수라고 보아야 한다)
@@ -25,12 +33,30 @@ var app = express();//express 객체생성
 //console.log("현재 실행중인 파일의 디렉토리 경로 : ",__dirname);
 app.use(static(__dirname+"/static")); //정적자원의 위치를 등록!!!
 
+//form양식으로 전송될때 처리
+app.use(express.urlencoded({
+    extended:true
+}));
+
+
+
 //요청, 응답을 use() 메서드로 처리해야 한다..
-app.use(function(request, response){
-    
+//post(매개변수1, 매개변수2) 메서드 매개변수가 2개 
+//매개변수1 : 요청uri 
+app.post("/notice/regist", function(request, response){
+    //response.end("your http method is post");
+    var title = request.body.title;
+    console.log("당신이 보낸 제목은 ", title);
+
 });
+
+//데이터베이스 접속 
+function connect(){
+    con=mysql.createConnection(conStr);
+}
 
 var server = http.createServer(app); //express 모듈을 이용한 서버!!
 server.listen(8888, function(){
     console.log("The Server using express is running at 8888 port...");
+    connect();
 });
