@@ -38,17 +38,52 @@ app.use(express.urlencoded({
     extended:true
 }));
 
-
-
 //요청, 응답을 use() 메서드로 처리해야 한다..
 //post(매개변수1, 매개변수2) 메서드 매개변수가 2개 
 //매개변수1 : 요청uri 
 app.post("/notice/regist", function(request, response){
     //response.end("your http method is post");
-    var title = request.body.title;
-    console.log("당신이 보낸 제목은 ", title);
+    //파라미터 3개 받기!!
 
+    var title = request.body.title;
+    var writer = request.body.writer;
+    var content = request.body.content;
+
+    console.log("당신이 보낸 제목은 ", title);
+    console.log("당신이 보낸 작성자는 ", writer);
+    console.log("당신이 보낸 내용은 ", content);
+    
+    //테스트해보세요~ 잘 나오네요
+    //mysql에 insert 하는 것은 여러분들이 지금 직접 해보세요 
+    //시간 10분 드립니다~!
+    var sql = "insert into notice(title ,writer ,content)";
+    sql+=" values(?,?,?)";
+
+    con.query(sql, [ title, writer ,content], function(error, fields){
+        if(error){
+            console.log("insert 실패", error);
+        }else{
+            response.writeHead(200,{"Content-Type":"text/html;charset=utf-8"});
+            response.end(getMsgURL("등록성공", "/list.html"));
+        }
+    });
 });
+
+//목록 가져오기 
+app.get("/notice/list", function(request ,response){
+    var sql="select * from notice order by notice_id desc";//내림차순
+    
+});
+
+//메시지 출력후 URL재접속 
+function getMsgURL(msg, url){
+    var tag="<script>";
+    tag+="alert('"+msg+"');";
+    tag+="location.href='"+url+"';";
+    tag+="</script>";
+
+    return tag;
+}
 
 //데이터베이스 접속 
 function connect(){
