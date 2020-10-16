@@ -8,6 +8,7 @@
 var http=require("http");
 var fs = require("fs");
 var express = require("express"); //http보다 훨씬 더 많은 기능이 보강된 모듈
+var static  = require("serve-static");//정적 자원 처리 전담 미들웨어!!
 
 //express 모듈은 미들웨어라 불리는 함수를 이용하여 기존의 http모듈로는
 //할 수 없었던 추가된 기능들을 지원한다...(express 필수라고 보아야 한다)
@@ -21,23 +22,15 @@ var express = require("express"); //http보다 훨씬 더 많은 기능이 보�
 
 var app = express();//express 객체생성
 // __dirname, __filename (현재 실행중인 node.js 파일의 경로를 반환해줌)
-console.log("현재 실행중인 파일의 디렉토리 경로 : ",__dirname);
-//app.use(static("D:\node_workspace\project1016\images"));
+//console.log("현재 실행중인 파일의 디렉토리 경로 : ",__dirname);
+app.use(static(__dirname+"/static")); //정적자원의 위치를 등록!!!
 
-var server = http.createServer(function(request, response){
-    
-    fs.readFile("./images/hell.jpg", function(error, data){
-        if(error){
-            console.log("list.html reading error", error);
-        }else{
-            response.writeHead(200,{"Content-Type":"image/jpeg"});
-            response.end(data);
-        }
-    });
-
+//요청, 응답을 use() 메서드로 처리해야 한다..
+app.use(function(request, response){
     
 });
 
+var server = http.createServer(app); //express 모듈을 이용한 서버!!
 server.listen(8888, function(){
-    console.log("The Server is running at 8888 port...");
+    console.log("The Server using express is running at 8888 port...");
 });
