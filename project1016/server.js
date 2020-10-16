@@ -97,11 +97,29 @@ app.get("/notice/list", function(request ,response){
 
 //한건 가져오기 
 app.get("/notice/detail", function(request ,response){
-    
     //get방식의 파라미터 받기!!
     var notice_id=request.query.notice_id;
-    var sql="select * from notice where notice_id="+notice_id;
-    response.end(sql);
+    var sql="select * from notice where notice_id=?";
+    con.query(sql,[notice_id] , function(error,record,fields){
+        if(error){
+            console.log("select error ", error);
+        }else{
+            fs.readFile("./detail.ejs", "utf-8", function(err, data){
+                if(err){
+                    console.log("detail.ejs reading error", err);
+                }else{
+                    response.writeHead(200,{"Content-Type":"text/html;charset=utf-8"});
+                    response.end(ejs.render(data,{
+                        notice:record[0] //한건
+                    }));
+                }
+            });
+        }
+    });
+    //response.end(sql);
+
+
+
 })    
 
 
