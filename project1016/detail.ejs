@@ -48,7 +48,11 @@ $(function(){
           //삭제 요청 (Get / Post ? 일부러 가겠다 post로...)
           //post로 보낸다는것은 form양식을 통해 보낸다는것임..
           //delete from notice where notice_id=6
-          location.href="/notice/list";          
+          $("form").attr({
+            "method":"post",//전송방법
+            "action":"/notice/del"//요청uri
+          });       
+          $("form").submit();//전송
         }
     });
 });    

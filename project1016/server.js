@@ -122,7 +122,22 @@ app.get("/notice/detail", function(request ,response){
 
 })    
 
+//한건 삭제
+app.post("/notice/del", function(request, response){
+    //파라미터 받기 (post방식)    
+    var notice_id = request.body.notice_id;
+    var sql="delete from notice where notice_id=?";//바인드변수 사용
 
+    con.query(sql, [notice_id], function(error, fields){
+        if(error){
+            console.log("delete fail ", error);
+        }else{
+            //메시지 출력후, list요청 
+            response.writeHead(200,{"Content-Type":"text/html;charset=utf-8"});
+            response.end(common.getMsgURL("삭제성공","/notice/list"));
+        }     
+    });
+});
 
 
 //데이터베이스 접속 
