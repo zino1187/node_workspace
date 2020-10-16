@@ -37,6 +37,8 @@ var server = http.createServer(function(request, response){
         update(request, response);
     }else if(urlJson.pathname=="/category"){//동물구분을 요청하면..
         getCategory(request, response);
+    }else if(urlJson.pathname=="/animal"){//소속된 동물을 요청하면...
+        getAnimal(request, response);
     }
     
 
@@ -231,6 +233,14 @@ function getCategory(request, response){
             });
         }
     });
+}
+
+//소속된 동물의 목록 가져오기
+function getAnimal(request, response){
+    var category_id = urlJson.query.category_id;//get방식의 category_id 파라미터 받기!!
+    var sql="select * from animal where category_id="+category_id;
+    response.writeHead(200, {"Content-Type":"text/html;charset=utf-8"});
+    response.end(sql);
 }
 
 //mysql 접속 
