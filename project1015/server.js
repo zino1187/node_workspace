@@ -213,6 +213,7 @@ function update(request, response){
     });
 }
 
+
 //동물의 종류 가져오기 
 function getCategory(request, response){
     var sql="select * from category";
@@ -253,7 +254,8 @@ function getAnimal(request, response){
                 }else{
                     response.writeHead(200, {"Content-Type":"text/html;charset=utf-8"});
                     response.end(ejs.render(data, {
-                        animalArray:record
+                        animalArray:record, 
+                        categoryArray:
                     }));
                 }
             });
