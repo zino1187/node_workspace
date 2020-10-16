@@ -11,6 +11,7 @@ var express = require("express"); //http보다 훨씬 더 많은 기능이 보�
 var static  = require("serve-static");//정적 자원 처리 전담 미들웨어!!
 var mysql = require("mysql");
 var ejs = require("ejs");
+var common = require("./common.js");
 
 let conStr={
     url:"localhost",
@@ -66,7 +67,7 @@ app.post("/notice/regist", function(request, response){
             console.log("insert 실패", error);
         }else{
             response.writeHead(200,{"Content-Type":"text/html;charset=utf-8"});
-            response.end(getMsgURL("등록성공", "/notice/list"));
+            response.end(common.getMsgURL("등록성공", "/notice/list"));
         }
     });
 });
@@ -94,16 +95,10 @@ app.get("/notice/list", function(request ,response){
 
 });
 
-//메시지 출력후 URL재접속 
+//한건 가져오기 
+    
 
-function getMsgURL(msg, url){
-    var tag="<script>";
-    tag+="alert('"+msg+"');";
-    tag+="location.href='"+url+"';";
-    tag+="</script>";
 
-    return tag;
-}
 
 
 //데이터베이스 접속 
