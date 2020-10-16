@@ -14,16 +14,21 @@ function getSubList(obj){
 </script>
 </head>
 <body>
+서버에서 다시 넘겨받은 category_id 는 <%=category_id%>    
+
 <select name="category_id" id="" onChange="getSubList(this)">
     <option value="0">동물구분</option>
     <%for(var i=0;i<categoryArray.length;i++){%>
         <%var category = categoryArray[i]; %>
-        <option value="<%=category.category_id%>"><%=category.category_name%></option>
+        <option selected value="<%=category.category_id%>"><%=category.category_name%></option>
     <%}%>        
 </select>    
 
 <select name="animal_id" id="">
-    <option value="0">동물이름</option>
+    <%for(var i=0;i<animalArray.length;i++){%>
+    <%var animal = animalArray[i];%>                
+    <option value="<%=animal.animal_id%>"><%=animal.name%></option>
+    <%}%>
 </select>    
 
 </body>
