@@ -10,6 +10,8 @@ var fs = require("fs");
 var express = require("express"); //http보다 훨씬 더 많은 기능이 보강된 모듈
 var static  = require("serve-static");//정적 자원 처리 전담 미들웨어!!
 var mysql = require("mysql");
+var ejs = require("ejs");
+
 let conStr={
     url:"localhost",
     user:"root",
@@ -64,7 +66,7 @@ app.post("/notice/regist", function(request, response){
             console.log("insert 실패", error);
         }else{
             response.writeHead(200,{"Content-Type":"text/html;charset=utf-8"});
-            response.end(getMsgURL("등록성공", "/list.html"));
+            response.end(getMsgURL("등록성공", "/notice/list"));
         }
     });
 });
@@ -72,10 +74,28 @@ app.post("/notice/regist", function(request, response){
 //목록 가져오기 
 app.get("/notice/list", function(request ,response){
     var sql="select * from notice order by notice_id desc";//내림차순
-    
+
+    con.query(sql,function(error, record, fields){
+        if(error){
+            console.log("list error", error);
+        }else{
+            fs.readFile("./list.ejs","utf-8",function(err, data){
+                if(err){
+                    console.log("lsit ejs reading error ", err);
+                }else{
+                    response.writeHead(200,{"Content-Type":"text/html;charset=utf-8"});
+                    response.end(ejs.render(data,{
+                        noticeArray:record
+                    }));
+                }
+            });
+        }
+    });
+
 });
 
 //메시지 출력후 URL재접속 
+
 function getMsgURL(msg, url){
     var tag="<script>";
     tag+="alert('"+msg+"');";
@@ -84,6 +104,7 @@ function getMsgURL(msg, url){
 
     return tag;
 }
+
 
 //데이터베이스 접속 
 function connect(){
