@@ -4,11 +4,12 @@ var fs = require("fs");
 var mysql = require("mysql");
 var ejs = require("ejs");
 var qs = require("querystring"); 
+
 let con;
 var urlJson;
 
 var server = http.createServer(function(request, response){
-    //요청 구분 
+    //요청 구분, 
     urlJson = url.parse(request.url, true);
     //console.log("urlJson : ", urlJson);
 
