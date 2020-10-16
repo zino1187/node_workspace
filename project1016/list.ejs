@@ -47,7 +47,7 @@ $(function(){ //문서가 모두 load되면..
   <%var notice = noticeArray[i];%>    
   <tr>
     <td><%=n%></td>
-    <td><a href="/notice/detail"><%=notice.title%></a></td>
+    <td><a href="/notice/detail?notice_id=<%=notice.notice_id%>"><%=notice.title%></a></td>
     <td><%=notice.writer%></td>
     <td><%=notice.regdate%></td>
     <td><%=notice.hit%></td>

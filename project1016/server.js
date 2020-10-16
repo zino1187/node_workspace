@@ -96,7 +96,13 @@ app.get("/notice/list", function(request ,response){
 });
 
 //한건 가져오기 
+app.get("/notice/detail", function(request ,response){
     
+    //get방식의 파라미터 받기!!
+    var notice_id=request.query.notice_id;
+    var sql="select * from notice where notice_id="+notice_id;
+    response.end(sql);
+})    
 
 
 
